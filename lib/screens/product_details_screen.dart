@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:shoplite1/models/Providers/product_provider.dart';
+import 'package:shoplite1/models/product.dart';
+
+class ProductDetailsScreen extends StatelessWidget {
+  static const routeName = '/product-details';
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedId = ModalRoute.of(context).settings.arguments as String;
+
+    final prodProvider = Provider.of<ProductProvider>(context);
+    final prodItems = prodProvider.items;
+
+    //final Product appTitle =
+        //prodItems.where((item) => item.id == selectedId);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('title'),
+      ),
+    );
+  }
+}
