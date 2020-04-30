@@ -12,14 +12,14 @@ class ProductDetailsScreen extends StatelessWidget {
     final selectedId = ModalRoute.of(context).settings.arguments as String;
 
     final prodProvider = Provider.of<ProductProvider>(context);
-    final prodItems = prodProvider.items;
+    final prodItem = prodProvider.findById(selectedId);
 
     //final Product appTitle =
         //prodItems.where((item) => item.id == selectedId);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('title'),
+        title: Text(prodItem.title),
       ),
     );
   }
