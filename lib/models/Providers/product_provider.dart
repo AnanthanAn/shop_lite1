@@ -10,7 +10,7 @@ class ProductProvider with ChangeNotifier {
         imageUrl:
             'https://static.hub.91mobiles.com/wp-content/uploads/2019/10/oneplus-8-pro-5K-render-2.jpg',
         price: 41000,
-        isFav: false),
+       ),
     Product(
         id: 'p2',
         title: 'T-Shirt',
@@ -18,7 +18,7 @@ class ProductProvider with ChangeNotifier {
         imageUrl:
             'https://www.mydesignation.com/wp-content/uploads/2019/02/but-why-tshirt-final-demo-1.jpg',
         price: 350.99,
-        isFav: false),
+        ),
     Product(
         id: 'p3',
         title: 'Shoes',
@@ -26,7 +26,7 @@ class ProductProvider with ChangeNotifier {
         imageUrl:
             'https://assets.adidas.com/images/w_600,f_auto,q_auto/56dc11ee795042b8b201a9f401213cf5_9366/Lite_Racer_Adapt_Shoes_Black_F36661_01_standard.jpg',
         price: 4000,
-        isFav: false),
+        ),
     Product(
         id: 'p4',
         title: 'Headset',
@@ -34,7 +34,7 @@ class ProductProvider with ChangeNotifier {
         imageUrl:
             'https://cdn.shopify.com/s/files/1/0188/6001/5680/products/hf002-black-china-dacom-hf002-bluetooth-5-0-headphone-with-built-in-mic-cueboss-com-13549387481152_600x.jpg?v=1586531860',
         price: 2500,
-        isFav: false)
+        )
   ];
 
   List<Product> get items {
