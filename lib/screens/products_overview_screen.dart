@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoplite1/models/Providers/cart.dart';
 import 'package:shoplite1/screens/cart_screen.dart';
+import 'package:shoplite1/widgets/app_drawer.dart';
 import 'package:shoplite1/widgets/badge.dart';
 import 'package:shoplite1/widgets/product_grid.dart';
 
 enum PopupMenuOptions { Favourites, All }
 
 class ProductsScreen extends StatefulWidget {
+  static const routeName = '/home-screen';
+
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
@@ -54,6 +57,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       body: ProductGrid(
         favOnly: favOnly,
       ),
+      drawer: AppDrawer(),
     );
   }
 }

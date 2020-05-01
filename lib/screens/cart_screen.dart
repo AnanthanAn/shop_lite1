@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoplite1/models/Providers/cart.dart';
+import 'package:shoplite1/models/Providers/orders.dart';
 import 'package:shoplite1/widgets/cart_item_tile.dart';
 
 class CartScreen extends StatelessWidget {
@@ -22,7 +23,10 @@ class CartScreen extends StatelessWidget {
                 children: <Widget>[
                   Text('Total'),
                   Spacer(),
-                  Chip(label: Text('₹${cart.totalPrice}'))
+                  Chip(label: Text('₹${cart.totalPrice}')),FlatButton(onPressed: (){
+                    Provider.of<Orders>(context,listen: false).addOrder(cart.items.values.toList(), cart.totalPrice);
+                    cart.clearCart();
+                  }, child: Text('Order Now'))
                 ],
               ),
               padding: EdgeInsets.all(10),
