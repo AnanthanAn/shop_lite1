@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 class CartItem {
   final String prodId;
   final String title;
-  int quantity = 1;
+  final quantity;
   final double price;
 
-  CartItem({this.prodId, this.title, this.quantity, this.price});
+  CartItem({this.prodId, this.title, this.quantity = 1, this.price});
 }
 
 class Cart with ChangeNotifier {
@@ -36,5 +36,10 @@ class Cart with ChangeNotifier {
 
   int get itemsCount {
     return _items.length;
+  }
+  double get totalPrice{
+    var total = 0.0;
+    _items.forEach((key,cartItem) => total += cartItem.quantity * cartItem.price);
+    return total;
   }
 }

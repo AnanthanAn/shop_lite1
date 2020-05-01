@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoplite1/models/Providers/cart.dart';
+import 'package:shoplite1/screens/cart_screen.dart';
 import 'package:shoplite1/widgets/badge.dart';
 import 'package:shoplite1/widgets/product_grid.dart';
 
@@ -21,8 +22,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
         actions: <Widget>[
           Consumer<Cart>(
             builder: (_, cart, _2) => Badge(
-                child: Icon(Icons.shopping_cart),
-                value: cart.itemsCount.toString()),
+                child: IconButton(icon: Icon(Icons.shopping_cart),onPressed: (){
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },),
+                value: cart.itemsCount.toString(),color: Colors.pinkAccent,),
           ),
           PopupMenuButton(
             onSelected: (PopupMenuOptions selectedOption) {
