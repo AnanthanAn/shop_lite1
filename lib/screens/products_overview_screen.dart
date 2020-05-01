@@ -25,7 +25,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 child: IconButton(icon: Icon(Icons.shopping_cart),onPressed: (){
                   Navigator.of(context).pushNamed(CartScreen.routeName);
                 },),
-                value: cart.itemsCount.toString(),color: Colors.pinkAccent,),
+                value: cart.itemsCount.toString(),color: Colors.lightGreen,),
           ),
           PopupMenuButton(
             onSelected: (PopupMenuOptions selectedOption) {
