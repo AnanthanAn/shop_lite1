@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoplite1/models/Providers/cart.dart';
+import 'package:shoplite1/widgets/cart_item_tile.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart-screen';
@@ -27,6 +28,19 @@ class CartScreen extends StatelessWidget {
               padding: EdgeInsets.all(10),
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+              child: ListView.builder(
+            itemCount: cart.itemsCount,
+            itemBuilder: (ctx, index) => CartItemTile(
+              id: cart.items.values.toList()[index].prodId,
+              quantity: cart.items.values.toList()[index].quantity,
+              title: cart.items.values.toList()[index].title,
+              price: cart.items.values.toList()[index].price,
+            ),
+          ))
         ],
       ),
     );
