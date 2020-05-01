@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shoplite1/models/Providers/product_provider.dart';
-import 'package:shoplite1/screens/product_details_screen.dart';
 import 'package:shoplite1/widgets/product_grid.dart';
 
 enum PopupMenuOptions { Favourites, All }
@@ -17,7 +14,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final prodProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
