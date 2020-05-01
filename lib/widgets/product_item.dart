@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoplite1/models/Providers/cart.dart';
 import 'package:shoplite1/models/product.dart';
 
 class ProductItem extends StatelessWidget {
@@ -8,8 +9,13 @@ class ProductItem extends StatelessWidget {
   final String imageUrl;
   ProductItem({this.id, this.title, this.imageUrl});
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    var cart = Provider.of<Cart>(context);
+
     return Consumer<Product>(
       builder: (ctx, product, child) => GridTile(
         child: Image.network(
@@ -30,7 +36,11 @@ class ProductItem extends StatelessWidget {
               onPressed: () {
                 product.toggleFavourite();
               }),
-          trailing: Icon(Icons.shopping_cart),
+          trailing: IconButton(
+            icon: Icon(Icons.shopping_cart),onPressed: (){
+              cart.addItem(prodId: product.id,title: product.title,price: product.price);
+          },
+          ),
         ),
       ),
     );

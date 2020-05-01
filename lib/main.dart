@@ -10,7 +10,7 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiProvider( //used to add multiple providers
       providers: [
         ChangeNotifierProvider.value(
           value: ProductProvider(),
