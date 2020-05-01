@@ -14,11 +14,47 @@ class ProductDetailsScreen extends StatelessWidget {
     final prodItem = prodProvider.findById(selectedId);
 
     //final Product appTitle =
-        //prodItems.where((item) => item.id == selectedId);
+    //prodItems.where((item) => item.id == selectedId);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(prodItem.title),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 300,
+            width: double.infinity,
+            child: Image.network(
+              prodItem.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            prodItem.title,
+            softWrap: true,
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            '₹${prodItem.price}',
+            softWrap: true,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            prodItem.desc,
+            softWrap: true,
+            style: TextStyle(fontSize: 18,),
+          ),
+        ],
       ),
     );
   }
