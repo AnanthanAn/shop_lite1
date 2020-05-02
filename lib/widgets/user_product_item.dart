@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoplite1/models/Providers/product_provider.dart';
 
 class UserProductItem extends StatelessWidget {
   final String id;
@@ -27,7 +29,9 @@ class UserProductItem extends StatelessWidget {
                       Icons.delete,
                       color: Colors.red,
                     ),
-                    onPressed: () {}),
+                    onPressed: () {
+                      Provider.of<ProductProvider>(context,listen: false).deleteProduct(id);
+                    }),
               ],
             ),
           ),
