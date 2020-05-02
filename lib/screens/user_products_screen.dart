@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoplite1/models/Providers/product_provider.dart';
+import 'package:shoplite1/screens/add_item_screen.dart';
 import 'package:shoplite1/widgets/user_product_item.dart';
 
 class UserProductsScreen extends StatelessWidget {
@@ -15,7 +16,9 @@ class UserProductsScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, AddItemScreen.routeName);
+            },
           ),
         ],
       ),

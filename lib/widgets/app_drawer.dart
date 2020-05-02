@@ -28,7 +28,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.shopping_basket),
+            leading: Icon(Icons.shop),
             title: Text('My Products'),
             onTap: () {
               Navigator.pushNamed(context, UserProductsScreen.routeName);
