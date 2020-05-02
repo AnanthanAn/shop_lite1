@@ -23,10 +23,34 @@ class CartScreen extends StatelessWidget {
                 children: <Widget>[
                   Text('Total'),
                   Spacer(),
-                  Chip(label: Text('₹${cart.totalPrice}')),FlatButton(onPressed: (){
-                    Provider.of<Orders>(context,listen: false).addOrder(cart.items.values.toList(), cart.totalPrice);
-                    cart.clearCart();
-                  }, child: Text('Order Now'))
+                  Chip(label: Text('₹${cart.totalPrice}')),
+                  FlatButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: Text('Do you want to place the order?'),
+                            actions: <Widget>[
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(ctx);
+                                  },
+                                  child: Text('No')),
+                              FlatButton(
+                                  onPressed: () {
+                                    Provider.of<Orders>(context, listen: false)
+                                        .addOrder(cart.items.values.toList(),
+                                            cart.totalPrice);
+                                    cart.clearCart();
+                                    Navigator.pop(ctx);
+                                    Scaffold.of(context).showSnackBar(SnackBar(content: Text('Order Placed!!'),));
+                                  },
+                                  child: Text('Yes')),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Text('Order Now'))
                 ],
               ),
               padding: EdgeInsets.all(10),

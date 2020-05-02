@@ -9,11 +9,8 @@ class ProductItem extends StatelessWidget {
   final String imageUrl;
   ProductItem({this.id, this.title, this.imageUrl});
 
-
-
   @override
   Widget build(BuildContext context) {
-
     var cart = Provider.of<Cart>(context);
 
     return Consumer<Product>(
@@ -37,9 +34,15 @@ class ProductItem extends StatelessWidget {
                 product.toggleFavourite();
               }),
           trailing: IconButton(
-            icon: Icon(Icons.shopping_cart),onPressed: (){
-              cart.addItem(prodId: product.id,title: product.title,price: product.price);
-          },
+            icon: Icon(Icons.shopping_cart),
+            onPressed: () {
+              cart.addItem(
+                  prodId: product.id,
+                  title: product.title,
+                  price: product.price);
+              Scaffold.of(context)
+                  .showSnackBar(SnackBar(content: Text('Item added to cart!')));
+            },
           ),
         ),
       ),
