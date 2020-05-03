@@ -61,9 +61,9 @@ class ProductProvider with ChangeNotifier {
               'price': product.price.toString(),
               'imageUrl': product.imageUrl
             }))
-        .then((_) {
+        .then((response) {
       final newProduct = Product(
-          id: DateTime.now().toString(),
+          id: json.decode(response.body)['name'],
           title: product.title,
           desc: product.desc,
           imageUrl: product.imageUrl,
