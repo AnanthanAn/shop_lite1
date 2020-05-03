@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoplite1/models/product.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProductProvider with ChangeNotifier {
   List<Product> _items = [
@@ -50,18 +52,28 @@ class ProductProvider with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    var newProduct = Product(
-        id: DateTime.now().toString(),
-        title: product.title,
-        desc: product.desc,
-        imageUrl: product.imageUrl,
-        price: product.price);
-    _items.add(newProduct);
-
-    notifyListeners();
+    var url = 'https://shoplite-88df0.firebaseio.com/products.json';
+    http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'desc': product.desc,
+              'price': product.price.toString(),
+              'imageUrl': product.imageUrl
+            }))
+        .then((_) {
+      final newProduct = Product(
+          id: DateTime.now().toString(),
+          title: product.title,
+          desc: product.desc,
+          imageUrl: product.imageUrl,
+          price: product.price);
+      _items.add(newProduct);
+      notifyListeners();
+    });
   }
 
-  void deleteProduct(String id){
+  void deleteProduct(String id) {
     _items.removeWhere((item) => item.id == id);
     notifyListeners();
   }

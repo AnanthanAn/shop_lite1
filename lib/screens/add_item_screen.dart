@@ -47,6 +47,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
     }
     _keyForm.currentState.save();
     Provider.of<ProductProvider>(context,listen: false).addProduct(product);
+    Navigator.pop(context);
   }
 
   @override
