@@ -52,7 +52,7 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    var url = 'https://shoplite-88df0.firebaseio.com/product.json';
+    var url = 'https://shoplite-88df0.firebaseio.com/products.json';
     try {
       final response = await http.get(url);
       final prodData = json.decode(response.body) as Map<String, dynamic>;
