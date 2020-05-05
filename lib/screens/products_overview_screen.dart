@@ -23,20 +23,48 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   @override
   void didChangeDependencies() {
-    if(!_isInit){
+    //this will run after context is available so making sure that this will run only once
+    if (!_isInit) {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<ProductProvider>(context,listen: false).fetchProducts().then((_){
-        setState(() {
-          _isLoading = false;
+      try {
+        Provider.of<ProductProvider>(context, listen: false)
+            .fetchProducts().catchError((error){
+          showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: Text('Oops!'),
+                content: Text('Something went wrong'),
+                actions: <Widget>[
+                  FlatButton(
+                      onPressed: () => Navigator.pop(ctx), child: Text('OK'))
+                ],
+              ));
+        })
+            .then((_) {
+          //then will wait for the async funtion to complete
+          setState(() {
+            _isLoading = false;
+          });
         });
-      });
+      } catch (error) {
+        showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text('Oops!'),
+                  content: Text('Something went wrong'),
+                  actions: <Widget>[
+                    FlatButton(
+                        onPressed: () => Navigator.pop(ctx), child: Text('OK'))
+                  ],
+                ));
+      }
     }
     _isInit = true;
-
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +72,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
         title: Text('Shop'),
         actions: <Widget>[
           Consumer<Cart>(
+            //Consumer is used when we want to listen to changes and rebuild only a certain part
             builder: (_, cart, _2) => Badge(
-                child: IconButton(icon: Icon(Icons.shopping_cart),onPressed: (){
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
                   Navigator.of(context).pushNamed(CartScreen.routeName);
-                },),
-                value: cart.itemsCount.toString(),color: Colors.lightGreen,),
+                },
+              ),
+              value: cart.itemsCount.toString(),
+              color: Colors.lightGreen,
+            ),
           ),
           PopupMenuButton(
             onSelected: (PopupMenuOptions selectedOption) {
@@ -74,9 +108,15 @@ class _ProductsScreenState extends State<ProductsScreen> {
           )
         ],
       ),
-      body: _isLoading ? Center(child: CircularProgressIndicator(semanticsLabel: 'Loading...' ,),) :ProductGrid(
-        favOnly: favOnly,
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                semanticsLabel: 'Loading...',
+              ),
+            )
+          : ProductGrid(
+              favOnly: favOnly,
+            ),
       drawer: AppDrawer(),
     );
   }

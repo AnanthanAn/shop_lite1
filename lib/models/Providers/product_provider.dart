@@ -52,23 +52,29 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    var url = 'https://shoplite-88df0.firebaseio.com/products.json';
-    final response = await http.get(url);
-    final prodData = json.decode(response.body) as Map<String, dynamic>;
-   List<Product> newList = [] ;
-   prodData.forEach((prodId, prodData) {
-      var newProduct = Product(
-          id: prodId,
-          title: prodData['title'],
-          desc: prodData['desc'],
-          imageUrl: prodData['imageUrl'],
-          price: double.parse(prodData['price'].toString()));
-      newList.add(newProduct);
-    });
+    var url = 'https://shoplite-88df0.firebaseio.com/product.json';
+    try {
+      final response = await http.get(url);
+      final prodData = json.decode(response.body) as Map<String, dynamic>;
+      List<Product> newList = [];
+      prodData.forEach((prodId, prodData) {
+        var newProduct = Product(
+            id: prodId,
+            title: prodData['title'],
+            desc: prodData['desc'],
+            imageUrl: prodData['imageUrl'],
+            price: double.parse(prodData['price'].toString()));
+        newList.add(newProduct);
+      });
 
-    print(_items.length);
-    _items = newList;
-    print(_items.length);
+      print(_items.length);
+      _items = newList;
+      print(_items.length);
+    } catch (error) {
+      print('Error in fetchProducts method - ${error.toString()}');
+      throw error;
+    }
+
     notifyListeners();
   }
 
