@@ -17,7 +17,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.home),
             title: Text('Shop Menu'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, ProductsScreen.routeName);
+              Navigator.popAndPushNamed(context, ProductsScreen.routeName);
             },
           ),
           ListTile(

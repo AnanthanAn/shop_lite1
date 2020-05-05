@@ -16,6 +16,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   var _imageUrlFocusNode = FocusNode();
   var _keyForm = GlobalKey<FormState>();
   var product =Product(id: null, title: null, desc: null, imageUrl: null, price: null);
+  var _isUploading = false;
 
   @override
   void dispose() {
@@ -41,12 +42,18 @@ class _AddItemScreenState extends State<AddItemScreen> {
     }
   }
 
-  void _saveForm(){
+  Future<void> _saveForm() async {
     if(!_keyForm.currentState.validate()){
       return;
     }
     _keyForm.currentState.save();
-    Provider.of<ProductProvider>(context,listen: false).addProduct(product);
+    setState(() {
+      _isUploading = true;
+    });
+    await Provider.of<ProductProvider>(context,listen: false).addProduct(product);
+    setState(() {
+      _isUploading = false;
+    });
     Navigator.pop(context);
   }
 
@@ -56,7 +63,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
       appBar: AppBar(
         title: Text('Add Product'),actions: <Widget>[IconButton(icon: Icon(Icons.save), onPressed: _saveForm)],
       ),
-      body: Padding(
+      body: _isUploading ? Center(child:CircularProgressIndicator()) : Padding(
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: _keyForm,

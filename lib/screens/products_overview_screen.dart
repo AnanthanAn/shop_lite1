@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoplite1/models/Providers/cart.dart';
+import 'package:shoplite1/models/Providers/product_provider.dart';
 import 'package:shoplite1/screens/cart_screen.dart';
 import 'package:shoplite1/widgets/app_drawer.dart';
 import 'package:shoplite1/widgets/badge.dart';
@@ -17,6 +18,25 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   var favOnly = false;
+  var _isInit = false;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if(!_isInit){
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<ProductProvider>(context,listen: false).fetchProducts().then((_){
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = true;
+
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +74,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           )
         ],
       ),
-      body: ProductGrid(
+      body: _isLoading ? Center(child: CircularProgressIndicator(semanticsLabel: 'Loading...' ,),) :ProductGrid(
         favOnly: favOnly,
       ),
       drawer: AppDrawer(),
