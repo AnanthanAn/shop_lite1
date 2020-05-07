@@ -14,30 +14,64 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final List<OrderItem> _items = [];
+   List<OrderItem> _items = [];
 
   List<OrderItem> get items {
     return [..._items];
   }
 
-  void addOrder(List<CartItem> products, double total) async{
+  int get noOrders{
+    return _items.length;
+  }
+
+  Future<void> fetchOrders() async {
+    final url = 'https://shoplite-88df0.firebaseio.com/orders.json';
+    List<OrderItem> _orderItems = [];
+    var response = await http.get(url);
+    var fetchedData = json.decode(response.body) as Map<String, dynamic>;
+    print(fetchedData);
+    fetchedData.forEach((orderId, order) {
+      _orderItems.add(
+        OrderItem(
+            id: orderId,
+            time: DateTime.parse(order['time']),
+            total: order['total'],
+            products: (order['products'] as List<dynamic>)
+                .map((product) => CartItem(
+                    prodId: product['id'],
+                    title: product['title'],
+                    price: product['price'],
+                    quantity: product['quantity']))
+                .toList()),
+      );
+    });
+    _items = _orderItems.reversed.toList();
+    print('order updated');
+    notifyListeners();
+  }
+
+  Future<void> addOrder(List<CartItem> products, double total) async {
     final url = 'https://shoplite-88df0.firebaseio.com/orders.json';
     final timeStamp = DateTime.now();
-    var response = await http.post(url,body: json.encode({
-      'time' : timeStamp.toIso8601String(),
-      'total' : total,
-      'products' : products.map((product) =>{
-        'id' : product.prodId,
-        'title' : product.title,
-        'quantity' : product.quantity,
-        'price' : product.price
-      }).toList(),
-    }));
+    var response = await http.post(url,
+        body: json.encode({
+          'time': timeStamp.toIso8601String(),
+          'total': total,
+          'products': products
+              .map((product) => {
+                    'id': product.prodId,
+                    'title': product.title,
+                    'quantity': product.quantity,
+                    'price': product.price
+                  })
+              .toList(),
+        }));
 
     _items.insert(
         0,
         OrderItem(
-            id: json.decode(response.body)['id'],//json.decode(response.body)['id'],
+            id: json.decode(
+                response.body)['name'], //json.decode(response.body)['id'],
             products: products,
             total: total,
             time: timeStamp));

@@ -17,6 +17,8 @@ class _OrderItemCardState extends State<OrderItemCard> {
 
   @override
   Widget build(BuildContext context) {
+    print('oreder item was built');
+    print(widget.orderItem.id);
     return Card(
       child: Column(
         children: <Widget>[
