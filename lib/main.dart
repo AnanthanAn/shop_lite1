@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shoplite1/models/Providers/auth.dart';
 import 'package:shoplite1/models/Providers/cart.dart';
 import 'package:shoplite1/models/Providers/orders.dart';
 import 'package:shoplite1/models/Providers/product_provider.dart';
 import 'package:shoplite1/screens/add_item_screen.dart';
+import 'package:shoplite1/screens/auth_screen.dart';
 import 'package:shoplite1/screens/cart_screen.dart';
 import 'package:shoplite1/screens/orders_screen.dart';
 import 'package:shoplite1/screens/product_details_screen.dart';
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Orders(),
         ),
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.pink,
         ),
         routes: {
-          '/'  :(context) => ProductsScreen(),
+          '/'  :(context) => AuthScreen(),
           ProductDetailsScreen.routeName: (context) => ProductDetailsScreen(),
           CartScreen.routeName : (context) => CartScreen(),
           OrderScreen.routeName : (context) => OrderScreen(),
