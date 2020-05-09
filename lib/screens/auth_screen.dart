@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -102,7 +103,20 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() async{
+  void _showErrorAlert(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('Oops!'),
+              content: Text(msg),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () => Navigator.pop(ctx), child: Text('Okay'))
+              ],
+            ));
+  }
+
+  void _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -112,9 +126,41 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      await Provider.of<Auth>(context,listen: false).logIn(_authData['email'], _authData['password']);
+      try {
+        await Provider.of<Auth>(context, listen: false)
+            .logIn(_authData['email'], _authData['password']);
+      } on HttpException catch (error) {
+        var errorMsg = 'Authentication failed';
+        if (error.toString().contains('EMAIL_NOT_FOUND')) {
+          errorMsg = 'Could not find email';
+        } else if (error.toString().contains('INVALID_PASSWORD')) {
+          errorMsg = 'Password is wrong, please check';
+        } else if (error.toString().contains('INVALID_EMAIL')) {
+          errorMsg = 'invalid email, please check';
+          _showErrorAlert(errorMsg);
+        }
+      } catch (error) {
+        var errorMsg = 'Something went wrong!';
+        _showErrorAlert(errorMsg);
+      }
     } else {
-      await Provider.of<Auth>(context,listen: false).signUp(_authData['email'], _authData['password']);
+      try {
+        await Provider.of<Auth>(context, listen: false)
+            .signUp(_authData['email'], _authData['password']);
+      } on HttpException catch (error) {
+        var errorMsg = 'Authentication failed';
+        if (error.toString().contains('EMAIL_EXISTS')) {
+          errorMsg = 'email already exists';
+        } else if (error.toString().contains('TOO_MANY_ATTEMPTS_TRY_LATER')) {
+          errorMsg = 'We have blocked all requests from this device due to unusual activity. Try again later.';
+        } else if (error.toString().contains('USER_DISABLED')) {
+          errorMsg = 'User disabled , please contact Administrator';
+          _showErrorAlert(errorMsg);
+        }
+      } catch (error) {
+        var errorMsg = 'Something went wrong!';
+        _showErrorAlert(errorMsg);
+      }
     }
     setState(() {
       _isLoading = false;
