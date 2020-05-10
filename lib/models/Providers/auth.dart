@@ -5,7 +5,7 @@ import 'package:shoplite1/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
   String authToken;
-  String expireDate;
+  DateTime expireDate;
   String userId;
 
   bool get isAuth {
@@ -28,19 +28,18 @@ class Auth with ChangeNotifier {
           }));
       print(response.body);
       var responseData = json.decode(response.body);
-      if (responseData['error'] != null){
-        throw HttpException(message:responseData['error']['message']);
+      if (responseData['error'] != null) {
+        print('http error - -- -- -- ${responseData['error']['message']}');
+        throw HttpException(message: responseData['error']['message']);
       }
       authToken = responseData['idToken'];
       expireDate = DateTime.now()
-          .add(Duration(seconds: int.parse(responseData['expiresIn'])))
-          .toString();
+          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       userId = responseData['localId'];
       print('User Id = $userId');
     } catch (error) {
       print('error - -- -- -- ${error.toString()}');
       throw error;
-
     }
   }
 
@@ -56,16 +55,18 @@ class Auth with ChangeNotifier {
           }));
       print(response.body);
       var responseData = json.decode(response.body);
-      if (responseData['error'] != null){
-        throw HttpException(message:responseData['error']['message']);
+      if (responseData['error'] != null) {
+        print('http error - -- -- -- ${responseData['error']['message']}');
+        throw HttpException(message: responseData['error']['message']);
       }
       authToken = responseData['idToken'];
       expireDate = DateTime.now()
-          .add(Duration(seconds: int.parse(responseData['expiresIn'])))
-          .toString();
+          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       userId = responseData['localId'];
       print('User Id = $userId');
     } catch (error) {
+      print('error - -- -- -- ${error.toString()}');
+      throw HttpException(message: error.toString());
       throw error;
     }
   }
