@@ -32,20 +32,21 @@ class MyApp extends StatelessWidget {
           value: Auth(),
         ),
       ],
-      child: MaterialApp(
+      child:Consumer<Auth>(builder: (context,authData,child) => MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.pink,
         ),
+        home: authData.isAuth ? ProductsScreen() : AuthScreen(),
         routes: {
-          '/'  :(context) => AuthScreen(),
+//          '/'  :(context) => AuthScreen(),
           ProductDetailsScreen.routeName: (context) => ProductDetailsScreen(),
           CartScreen.routeName : (context) => CartScreen(),
           OrderScreen.routeName : (context) => OrderScreen(),
           UserProductsScreen.routeName : (context) => UserProductsScreen(),
           AddItemScreen.routeName : (context) => AddItemScreen(),
         },
-      ),
+      ),)
     );
   }
 }

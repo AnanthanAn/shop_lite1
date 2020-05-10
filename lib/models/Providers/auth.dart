@@ -4,16 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:shoplite1/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
-  String authToken;
+  String _authToken;
   DateTime expireDate;
   String userId;
 
   bool get isAuth {
-    return authToken != null; //return true if authKey is not null
+    return _authToken != null; //return true if authKey is not null
   }
 
   String get token {
-    return authToken;
+    if(_authToken != null && expireDate.isAfter(DateTime.now()) && expireDate != null){
+      return _authToken;
+    }
+    return null;
   }
 
   Future<void> signUp(String email, String password) async {
@@ -32,7 +35,7 @@ class Auth with ChangeNotifier {
         print('http error - -- -- -- ${responseData['error']['message']}');
         throw HttpException(message: responseData['error']['message']);
       }
-      authToken = responseData['idToken'];
+      _authToken = responseData['idToken'];
       expireDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       userId = responseData['localId'];
@@ -41,6 +44,7 @@ class Auth with ChangeNotifier {
       print('error - -- -- -- ${error.toString()}');
       throw error;
     }
+    notifyListeners();
   }
 
   Future<void> logIn(String email, String password) async {
@@ -59,7 +63,7 @@ class Auth with ChangeNotifier {
         print('http error - -- -- -- ${responseData['error']['message']}');
         throw HttpException(message: responseData['error']['message']);
       }
-      authToken = responseData['idToken'];
+      _authToken = responseData['idToken'];
       expireDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       userId = responseData['localId'];
@@ -69,5 +73,6 @@ class Auth with ChangeNotifier {
       throw HttpException(message: error.toString());
       throw error;
     }
+    notifyListeners();
   }
 }
