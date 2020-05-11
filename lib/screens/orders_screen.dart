@@ -18,6 +18,9 @@ class OrderScreen extends StatelessWidget {
             if (dataSnapshot.connectionState == ConnectionState.done) {
               print('done');
               print(Provider.of<Orders>(context, listen: false).noOrders);
+              if(!dataSnapshot.hasData){
+                return Center(child: Text('Sorry you don\'t have any orders yet'),);
+              }
               return Consumer<Orders>(
                 builder: (context, orderData, child) => ListView.builder(
                   itemBuilder: (ctx, idx) => OrderItemCard(

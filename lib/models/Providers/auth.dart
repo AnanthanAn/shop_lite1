@@ -6,7 +6,7 @@ import 'package:shoplite1/models/http_exception.dart';
 class Auth with ChangeNotifier {
   String _authToken;
   DateTime expireDate;
-  String userId;
+  String _userId;
 
   bool get isAuth {
     return _authToken != null; //return true if authKey is not null
@@ -17,6 +17,10 @@ class Auth with ChangeNotifier {
       return _authToken;
     }
     return null;
+  }
+
+  String get userId{
+    return _userId;
   }
 
   Future<void> signUp(String email, String password) async {
@@ -38,8 +42,8 @@ class Auth with ChangeNotifier {
       _authToken = responseData['idToken'];
       expireDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
-      userId = responseData['localId'];
-      print('User Id = $userId');
+      _userId = responseData['localId'];
+      print('User Id = $_userId');
     } catch (error) {
       print('error - -- -- -- ${error.toString()}');
       throw error;
@@ -66,8 +70,8 @@ class Auth with ChangeNotifier {
       _authToken = responseData['idToken'];
       expireDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
-      userId = responseData['localId'];
-      print('User Id = $userId');
+      _userId = responseData['localId'];
+      print('User Id = $_userId');
     } catch (error) {
       print('error - -- -- -- ${error.toString()}');
       throw HttpException(message: error.toString());
