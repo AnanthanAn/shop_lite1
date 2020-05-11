@@ -79,4 +79,10 @@ class Auth with ChangeNotifier {
     }
     notifyListeners();
   }
+  void logOut(){
+    _authToken = null;
+    expireDate = null;
+    _userId = null;
+    notifyListeners();
+  }
 }
