@@ -23,7 +23,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.shopping_basket),
+            leading: Icon(Icons.credit_card),
             title: Text('My orders'),
             onTap: () {
               Navigator.pushNamed(context, OrderScreen.routeName);
@@ -37,7 +37,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: Text('My Products'),
+            title: Text('LogOut'),
             onTap: () {
               Navigator.pop(context);
               Provider.of<Auth>(context,listen: false).logOut();
