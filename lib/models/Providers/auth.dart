@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoplite1/models/http_exception.dart';
 
 class Auth with ChangeNotifier {
@@ -13,13 +14,15 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    if(_authToken != null && expireDate.isAfter(DateTime.now()) && expireDate != null){
+    if (_authToken != null &&
+        expireDate.isAfter(DateTime.now()) &&
+        expireDate != null) {
       return _authToken;
     }
     return null;
   }
 
-  String get userId{
+  String get userId {
     return _userId;
   }
 
@@ -49,6 +52,10 @@ class Auth with ChangeNotifier {
       throw error;
     }
     notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('userData',
+        json.encode({'_authToken': _authToken, '_userId': _userId}));
   }
 
   Future<void> logIn(String email, String password) async {
@@ -78,8 +85,26 @@ class Auth with ChangeNotifier {
       throw error;
     }
     notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('userData',
+        json.encode({'_authToken': _authToken, '_userId': _userId}));
   }
-  void logOut(){
+
+  Future<bool> isUserLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userData = json.decode(prefs.getString('userData'));
+    _authToken = userData['_authToken'];
+    _userId = userData['_userId'];
+    if (_userId == null || _userId.isEmpty) {
+      notifyListeners();
+      return false;
+    }
+    notifyListeners();
+    return true;
+
+  }
+
+  void logOut() {
     _authToken = null;
     expireDate = null;
     _userId = null;

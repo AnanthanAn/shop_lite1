@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.pink,
             ),
-            home: authData.isAuth ? ProductsScreen() : AuthScreen(),
+            home: authData.isAuth ? ProductsScreen() : FutureBuilder(future: authData.isUserLoggedIn(),builder: (context,authSnapshot) => authSnapshot.connectionState == ConnectionState.done ? AuthScreen() : false,),
             routes: {
 //          '/'  :(context) => AuthScreen(),
               ProductDetailsScreen.routeName: (context) =>
