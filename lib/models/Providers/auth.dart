@@ -84,7 +84,6 @@ class Auth with ChangeNotifier {
     } catch (error) {
       print('error - -- -- -- ${error.toString()}');
       throw HttpException(message: error.toString());
-      throw error;
     }
     notifyListeners();
   }
