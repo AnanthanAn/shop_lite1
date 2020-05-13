@@ -10,13 +10,11 @@ class Auth with ChangeNotifier {
   String _userId;
 
   bool get isAuth {
-    return _authToken != null; //return true if authKey is not null
+    return _userId != null; //return true if authKey is not null
   }
 
   String get token {
-    if (_authToken != null &&
-        expireDate.isAfter(DateTime.now()) &&
-        expireDate != null) {
+    if (_authToken != null ) {
       return _authToken;
     }
     return null;
@@ -47,15 +45,15 @@ class Auth with ChangeNotifier {
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       _userId = responseData['localId'];
       print('User Id = $_userId');
+      final prefs = await SharedPreferences.getInstance();
+      final userData =
+          json.encode({'authToken': _authToken, 'userId': _userId});
+      prefs.setString('userData', userData);
     } catch (error) {
       print('error - -- -- -- ${error.toString()}');
       throw error;
     }
     notifyListeners();
-
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('userData',
-        json.encode({'_authToken': _authToken, '_userId': _userId}));
   }
 
   Future<void> logIn(String email, String password) async {
@@ -79,35 +77,43 @@ class Auth with ChangeNotifier {
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       _userId = responseData['localId'];
       print('User Id = $_userId');
+      final prefs = await SharedPreferences.getInstance();
+      final userData =
+          json.encode({'authToken': _authToken, 'userId': _userId});
+      prefs.setString('userData', userData);
     } catch (error) {
       print('error - -- -- -- ${error.toString()}');
       throw HttpException(message: error.toString());
       throw error;
     }
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('userData',
-        json.encode({'_authToken': _authToken, '_userId': _userId}));
   }
 
   Future<bool> isUserLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    final userData = json.decode(prefs.getString('userData'));
-    _authToken = userData['_authToken'];
-    _userId = userData['_userId'];
+    if (!prefs.containsKey('userData')) {
+      return false;
+    }
+    final userData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    _authToken = userData['authToken'];
+    _userId = userData['userId'];
+    print('User id --------- --- -- -- $_userId');
     if (_userId == null || _userId.isEmpty) {
-      notifyListeners();
+//      notifyListeners();
       return false;
     }
     notifyListeners();
     return true;
-
   }
 
-  void logOut() {
+  void logOut() async {
     _authToken = null;
     expireDate = null;
     _userId = null;
+    final prefs = await SharedPreferences.getInstance();
+    // prefs.remove('userData');
+    prefs.clear();
     notifyListeners();
   }
 }
