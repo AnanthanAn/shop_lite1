@@ -1,4 +1,4 @@
-import 'dart:io';
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -62,7 +62,7 @@ class AuthScreen extends StatelessWidget {
                       child: Text(
                         'MyShop',
                         style: TextStyle(
-                          color: Theme.of(context).accentTextTheme.title.color,
+                          color: Colors.white,
                           fontSize: 40,
                           fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,
@@ -151,7 +151,7 @@ class _AuthCardState extends State<AuthCard> {
 //      }
 //      _showErrorAlert(errorMsg);
     } catch (error) {
-      var errorMsg = 'Something went wrong!';
+      var errorMsg = error.toString();
       if (error.toString().contains('EMAIL_NOT_FOUND')) {
         errorMsg = 'Could not find email';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
