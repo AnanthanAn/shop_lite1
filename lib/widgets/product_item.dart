@@ -14,38 +14,40 @@ class ProductItem extends StatelessWidget {
     var cart = Provider.of<Cart>(context);
 
     return Consumer<Product>(
-      builder: (ctx, product, child) => GridTile(
-        child: Hero(
-            tag: product.id,
-            child: FadeInImage(
-              placeholder: AssetImage('assets/images/placeholder.png'),
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-            )),
-        footer: GridTileBar(
-          backgroundColor: Colors.black54,
-          title: Text(
-            product.title,
-            textAlign: TextAlign.center,
-          ),
-          leading: IconButton(
-              color: Theme.of(context).primaryColor,
-              icon: product.isFav
-                  ? Icon(Icons.favorite)
-                  : Icon(Icons.favorite_border),
+      builder: (ctx, product, child) => ClipRRect(borderRadius: BorderRadius.circular(10),
+        child: GridTile(
+          child: Hero(
+              tag: product.id,
+              child: FadeInImage(
+                placeholder: AssetImage('assets/images/placeholder.png'),
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+              )),
+          footer: GridTileBar(
+            backgroundColor: Colors.black54,
+            title: Text(
+              product.title,
+              textAlign: TextAlign.center,
+            ),
+            leading: IconButton(
+                color: Theme.of(context).primaryColor,
+                icon: product.isFav
+                    ? Icon(Icons.favorite)
+                    : Icon(Icons.favorite_border),
+                onPressed: () {
+                  product.toggleFavourite();
+                }),
+            trailing: IconButton(
+              icon: Icon(Icons.shopping_cart),
               onPressed: () {
-                product.toggleFavourite();
-              }),
-          trailing: IconButton(
-            icon: Icon(Icons.shopping_cart),
-            onPressed: () {
-              cart.addItem(
-                  prodId: product.id,
-                  title: product.title,
-                  price: product.price);
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text('Item added to cart!')));
-            },
+                cart.addItem(
+                    prodId: product.id,
+                    title: product.title,
+                    price: product.price);
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(content: Text('Item added to cart!')));
+              },
+            ),
           ),
         ),
       ),
