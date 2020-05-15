@@ -15,7 +15,13 @@ class ProductItem extends StatelessWidget {
 
     return Consumer<Product>(
       builder: (ctx, product, child) => GridTile(
-        child: FadeInImage(placeholder: AssetImage('assets/images/placeholder.png'), image: NetworkImage(imageUrl),fit: BoxFit.cover,),
+        child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/placeholder.png'),
+              image: NetworkImage(imageUrl),
+              fit: BoxFit.cover,
+            )),
         footer: GridTileBar(
           backgroundColor: Colors.black54,
           title: Text(

@@ -24,10 +24,11 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    var url = 'https://shoplite-88df0.firebaseio.com/products.json?auth=$_authToken';
+    var url = 'https://shoplite-88df0.firebaseio.com/products.json';
     try {
       final response = await http.get(url);
       final prodData = json.decode(response.body) as Map<String, dynamic>;
+      print(prodData);
       List<Product> newList = [];
       prodData.forEach((prodId, prodData) {
         var newProduct = Product(
@@ -36,6 +37,7 @@ class ProductProvider with ChangeNotifier {
             desc: prodData['desc'],
             imageUrl: prodData['imageUrl'],
             price: double.parse(prodData['price'].toString()));
+
         newList.add(newProduct);
       });
 
