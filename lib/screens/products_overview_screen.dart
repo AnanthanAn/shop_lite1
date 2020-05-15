@@ -35,7 +35,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               context: context,
               builder: (ctx) => AlertDialog(
                 title: Text('Oops!'),
-                content: Text('Something went wrong'),
+                content: Text(error.toString()),
                 actions: <Widget>[
                   FlatButton(
                       onPressed: () => Navigator.pop(ctx), child: Text('OK'))
