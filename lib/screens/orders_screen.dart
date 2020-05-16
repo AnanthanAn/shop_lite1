@@ -13,14 +13,15 @@ class OrderScreen extends StatelessWidget {
         title: Text('Your Orders'),
       ),
       body: FutureBuilder(
-          future: Provider.of<Orders>(context, listen: false).fetchOrders(),
+          future: Provider.of<Orders>(context,listen: false).fetchOrders(),
           builder: (ctx, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.done) {
               print('done');
               print(Provider.of<Orders>(context, listen: false).noOrders);
-              if(!dataSnapshot.hasData){
-                return Center(child: Text('Sorry you don\'t have any orders yet'),);
-              }
+//              if(!dataSnapshot.hasData){
+//                print('order data --- -- -- ${dataSnapshot.data.toString()}');
+//                return Center(child: Text('Sorry you don\'t have any orders yet'),);
+//              }
               return Consumer<Orders>(
                 builder: (context, orderData, child) => ListView.builder(
                   itemBuilder: (ctx, idx) => OrderItemCard(
